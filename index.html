@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISU Artifact: Quiz</title>
+    <link rel="icon" href="favicon.png">
+    <style>
+        body {
+            font-family: 'Cambria', sans-serif;
+            font-size: 1.2rem;
+            margin: 40px;
+            text-align: center;
+            background-image: url(https://bikefriendlyoc.org/wp-content/uploads/2016/09/website-background-pattern.jpg);
+        }
+        .hidden {
+            display: none;
+        }
+        
+         h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 3rem;
+            color: #850000;
+            border-radius: 30px;
+            padding: 15px;
+            background-color: #fcf0f0;
+            border: 5px solid #850000;
+        }
+        
+        h2 {
+          background-color: #850000;
+          color: white;
+          border-radius: 15px;
+          padding: 5px;
+          margin-top: 0px;
+          margin-bottom: 20px;
+        }
+        
+        .question {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 6px;
+            background-color: #ededfc;
+        }
+        .answer {
+            margin-left: 20px;
+            color: #014d22;
+            margin-top: 5px;
+        }
+        
+        select {
+          font-family: 'Perpetua', Sans-Serif;
+          font-size: 1rem;
+          padding: 10px;
+          margin: 20px;
+          border: 2px solid #a87b00;
+          border-radius: 7px;
+          background-color: #f4f4f4;
+          color: #111;
+          cursor: pointer;
+        }
+        
+        select:hover {
+          background-color: #fcf1d2;
+          border-color: #d19900;
+        }
+        
+        input {
+          font-family: 'Perpetua', Sans-Serif;
+          padding: 10px;
+          margin: 20px;
+          border: 2px solid #00236e;
+          border-radius: 7px;
+          background-color: #f4f4f4;
+          color: #111;
+          cursor: text;
+        }
+        
+        input:hover {
+          border-color: #0037ad;
+          background-color: #e4eaf7;
+        }
+        
+        button {
+          font-family: 'Cambria', Sans-Serif;
+          font-size: 1rem;
+          padding: 5px;
+          margin-bottom: 30px;
+          border: 2px solid #014d22;
+          border-radius: 5px;
+          background-color: #f4f4f4;
+          color: #111;
+          cursor: pointer;
+        }
+        
+        button:hover {
+          background-color: #e8fff2;
+        }
+        
+        footer {
+          background-color: #850000;
+          color: white;
+          text-align: center;
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          padding: 0;
+        }
+        
+        a {
+          margin-bottom: 20px;
+          padding: 0;
+          color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Math Quiz Generator</h1>
+    <h2>ISU: Part 1 Artifact (<a href="https://github.com/vic-tor-ia0314/isu">Source Code</a>)</h2>
+    <label for="shape">Choose something to practice:</label>
+    <select id="shape" onchange="showInput()">
+      <option value="">--Select--</option>
+      <option value="triprism">Triangular Prism</option>
+      <option value="tripyramid">Triangular Pyramid</option>
+      <option value="cube">Cube</option>
+      <option value="rectprism">Rectangular Prism</option>
+      <option value="rectpyramid">Rectangular Pyramid</option>
+      <option value="sqpyramid">Square-Based Pyramid</option>
+      <option value="cone">Cone</option>
+      <option value="cylinder">Cylinder</option>
+      <option value="sphere">Sphere</option>
+      <option value="pythagorean">Pythagorean Theorem</option>
+    </select>
+
+    <div id="inputSection" class="hidden">
+      <label for="numQuestions">Number of questions:</label>
+      <input type="number" id="numQuestions" min="1">
+      <button onclick="generateQuestions()">Generate</button>
+    </div>
+
+    <div id="questionsSection" class="hidden"></div>
+    
+    <div id="revealSection" class="hidden">
+      <p>Note: All decimal values are rounded to 2 places.</p>
+      <button onclick="revealAnswers()">Reveal Answers</button>
+    </div>
+
+    <footer>
+      <p>&copy; Victoria Tsao, 2024</p>
+    </footer>
+
+    <script>
+        function showInput() {
+            document.getElementById("inputSection").classList.remove("hidden");
+            document.getElementById("questionsSection").innerHTML = "";
+            document.getElementById("questionsSection").classList.add("hidden");
+            document.getElementById("revealSection").classList.add("hidden");
+        }
+
+        function generateRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function generateQuestions() {
+            const shape = document.getElementById("shape").value;
+            const numQuestions = parseInt(document.getElementById("numQuestions").value);
+            const questionsSection = document.getElementById("questionsSection");
+
+            if (isNaN(numQuestions) || numQuestions < 1) {
+                alert("Please enter a valid number of questions.");
+                return;
+            }
+
+            questionsSection.innerHTML = "";
+            questionsSection.classList.remove("hidden");
+
+            for (let i = 0; i < numQuestions; i++) {
+                const questionDiv = document.createElement("div");
+                questionDiv.classList.add("question");
+
+                let questionText = "";
+                let answerText = "";
+
+                if (shape === "rectprism") {
+                    const length = generateRandomInt(1, 20);
+                    const width = generateRandomInt(1, 20);
+                    const height = generateRandomInt(1, 20);
+                    const volume = length * width * height;
+                    const type = ["side length", "base area", "surface area", "volume"][generateRandomInt(0, 3)];
+
+                    if (type === "side length") {
+                        questionText = `Q${i + 1}: What are the possible side lengths of a rectangular prism with volume ${volume}?`;
+                        answerText = `Possible dimensions: ${length}x${width}x${height}, other answers may differ`;
+                    } else if (type === "base area") {
+                        questionText = `Q${i + 1}: What is the base area of a rectangular prism with dimensions ${length}x${width}?`;
+                        answerText = `Base area: ${length * width}`;
+                    } else if (type === "surface area") {
+                        questionText = `Q${i + 1}: What is the surface area of a rectangular prism with dimensions ${length}x${width}x${height}?`;
+                        answerText = `Surface area: ${2 * (length * width + width * height + length * height)}`;
+                    } else if (type === "volume") {
+                        questionText = `Q${i + 1}: What is the volume of a rectangular prism with dimensions ${length}x${width}x${height}?`;
+                        answerText = `Volume: ${length * width * height}`;
+                    }
+                
+                } else if (shape === "triprism") {
+                  const baseHeight = generateRandomInt(1, 20);
+                  const baseBase = generateRandomInt(1, 20);
+                  const height = generateRandomInt(1, 20);
+                  const volume = ((baseHeight * baseBase) / 2) * height
+                  const baseArea = (baseHeight * baseBase) / 2
+                  const type = ["base length", "base height", "height", "base area", "volume"][generateRandomInt(0, 4)];
+                  
+                  if (type === "base length") {
+                    questionText = `Q${i + 1}: What is the base triangle's base length if the triangle area is ${baseArea} and the triangle height is ${baseHeight}?`;
+                    answerText = `Base triangle's base length: ${(baseArea * 2) / baseHeight}`;
+                  } else if (type === "base height") {
+                    questionText = `Q${i + 1}: What is the base triangle's height if the triangle area is ${baseArea} and the triangle's base length is ${baseBase}?`;
+                    answerText = `Base triangle height: ${(baseArea * 2) / baseBase}`;
+                  } else if (type === "height") {
+                    questionText = `Q${i + 1}: What is the height of a triangular prism with volume ${volume} and base area ${baseArea}?`;
+                    answerText = `Height: ${volume / baseArea}`;
+                  } else if (type === "base area") {
+                    questionText = `Q${i + 1}: What is the base area of a triangular prism with base triangle's base length ${baseBase} and base triangle height ${baseHeight}?`;
+                    answerText = `Base area: ${(baseBase * baseHeight) / 2}`;
+                  } else if (type == "volume") {
+                    questionText = `Q${i + 1}: What is the volume for a triangular prism with triangle height ${baseHeight}, triangle base ${baseBase}, and height ${height}?`;
+                    answerText = `Volume: ${((baseHeight * baseBase) / 2) * height}`;
+                  }
+                
+                } else if (shape === "tripyramid") {
+                  const baseHeight = generateRandomInt(1, 20);
+                  const baseBase = generateRandomInt(1, 20);
+                  const height = generateRandomInt(1, 20);
+                  const volume = ((baseHeight * baseBase) * height) / 3
+                  const type = ["base area", "surface area", "volume", "height"][generateRandomInt(0, 3)];
+                  
+                  if (type === "base area") {
+                    questionText = `Q${i + 1}: What is the base area of a triangular pyramid with volume ${volume.toFixed(2)} and height ${height}?`;
+                    answerText = `Base area: ${(volume * 3) / height}`;
+                  } else if (type === "surface area") {
+                    questionText = `What is the surface area of a triangular pyramid with a face's base length ${baseBase}, a face's height ${baseHeight}, and height ${height}?`;
+                    answerText = `Surface area: ${((baseBase * baseHeight) / 2) + (3 / 2) * baseBase * baseHeight}`;
+                  } else if (type === "volume") {
+                    questionText = `What is the volume of a triangular pyramid with a face's base length ${baseBase}, a face's height ${baseHeight}, and height ${height}?`;
+                    answerText = `Volume: ${(((baseHeight * baseBase) * height) / 3).toFixed(2)}`;
+                  } else if (type === "height") {
+                    questionText = `What is the height of a triangular pyramid with base area ${(baseBase * baseHeight) / 2} and volume ${volume.toFixed(2)}?`;
+                    answerText = `Base area: ${(volume * 3) / (baseHeight * baseBase)}`;
+                  }
+                  
+                } else if (shape === "cube") {
+                    const edge = generateRandomInt(1, 20);
+                    const type = ["face area", "surface area", "volume"][generateRandomInt(0, 2)];
+                    
+                    if (type === "face area") {
+                      questionText = `What is the area of one of the faces of a cube with edge length ${edge}?`;
+                      answerText = `Face area: ${edge ** 2}`;
+                    } else if (type === "surface area") {
+                      questionText = `What is the surface area of a cube with edge length ${edge}?`;
+                      answerText = `Surface area: ${6 * edge ** 2}`;
+                    } else if (type === "volume") {
+                      questionText = `What is the volume of a cube with edge length ${edge}?`;
+                      answerText = `Volume: ${edge ** 3}`;
+                    }
+                    
+                } else if (shape === "rectpyramid") {
+                  const width = generateRandomInt(1, 20);
+                  const length = generateRandomInt(1, 20);
+                  const height = generateRandomInt(1, 20);
+                  const volume = (width * length * height) / 3;
+                  const type = ["base area", "volume"][generateRandomInt(0, 1)];
+                  
+                  if (type === "base area") {
+                    questionText = `What is the base area of a rectangular pyramid with volume ${volume.toFixed(2)} and height ${height}?`;
+                    answerText = `Base area: ${(volume / height).toFixed(2)}`;
+                  } else if (type === "volume") {
+                    questionText = `What is the volume of a rectangular pyramid with width ${width}, length ${length}, and height ${height}?`;
+                    answerText = `Volume: ${((width * length * height) / 3).toFixed(2)}`;
+                  }
+                  
+                } else if (shape === "sqpyramid") {
+                  const edge = generateRandomInt(1, 20);
+                  const height = generateRandomInt(1, 20);
+                  const volume = (edge ** 2 * height) / 3;
+                  const type = ["base area", "volume"][generateRandomInt(0, 1)];
+                  
+                  if (type === "base area") {
+                    questionText = `What is the base area of a square-based pyramid with volume ${volume.toFixed(2)} and height ${height}?`;
+                    answerText = `Base area: ${(volume / height).toFixed(2)}`;
+                  } else if (type === "volume") {
+                    questionText = `What is the volume of a square-based pyramid with edge length ${edge}, and height ${height}?`;
+                    answerText = `Volume: ${((edge ** 2 * height) / 3).toFixed(2)}`;
+                  }
+                
+                } else if (shape === "cone") {
+                  const radius = generateRandomInt(1, 20);
+                  const height = generateRandomInt(1, 20);
+                  const volume = Math.PI * radius ** 2 * height / 3;
+                  const type = ["slant height", "surface area", "volume", "base area"][generateRandomInt(0, 3)];
+
+                  if (type === "slant height") {
+                      questionText = `Q${i + 1}: What is the slant height of a cone with radius ${radius} and height ${height}?`;
+                      answerText = `Slant height: ${Math.sqrt(radius ** 2 + height ** 2).toFixed(2)}`;
+                  } else if (type === "surface area") {
+                      const slantHeight = Math.sqrt(radius ** 2 + height ** 2);
+                      questionText = `Q${i + 1}: What is the surface area of a cone with radius ${radius} and height ${height}?`;
+                      answerText = `Surface area: ${(Math.PI * radius * (radius + slantHeight)).toFixed(2)}`;
+                  } else if (type === "volume") {
+                      questionText = `Q${i + 1}: What is the volume of a cone with radius ${radius} and height ${height}?`;
+                      answerText = `Volume: ${(Math.PI * radius ** 2 * height / 3).toFixed(2)}`;
+                  } else if (type === "base area") {
+                      questionText = `Q${i + 1}: What is the base area of a cone with a volume of ${volume.toFixed(2)} and height ${height}?`;
+                      answerText = `Base area: ${(3 * volume / height).toFixed(2)}`;
+                  }
+                } else if (shape == "cylinder") {
+                  const radius = generateRandomInt(1, 20);
+                  const height = generateRandomInt(1, 20);
+                  const volume = Math.PI * radius ** 2 * height
+                  const type = ["radius", "height", "volume", "surface area", "base area"][generateRandomInt(0, 4)];
+                  
+                  if (type === "radius") {
+                    questionText = `Q${i + 1}: What is the radius of a cylinder with volume ${volume.toFixed(2)} and height ${height}?`;
+                    answerText = `Radius: ${((Math.sqrt(volume / Math.PI * height))).toFixed(2)}`;
+                  } else if (type === "height") {
+                    questionText = `Q${i + 1}: What is the height of a cylinder with volume ${volume.toFixed(2)} and radius ${radius}?`;
+                    answerText = `Height: ${(volume / (Math.PI * radius ** 2)).toFixed(2)}`;
+                  } else if (type === "volume") {
+                    questionText = `Q${i + 1}: What is the volume of a cylinder with height ${height} and radius ${radius}?`;
+                    answerText = `Volume: ${(Math.PI * radius ** 2 * height).toFixed(2)}`;
+                  } else if (type === "surface area") {
+                    questionText = `Q${i + 1}: What is the surface area of a cylinder with height ${height} and radius ${radius}?`;
+                    answerText = `Surface area: ${(2 * Math.PI * radius * height + 2 * Math.PI * radius ** 2).toFixed(2)}`;
+                  } else if (type === "base area") {
+                    questionText = `Q${i + 1}: What is the base area of a cylinder with volume ${volume.toFixed(2)} and height ${height}?`;
+                    answerText = `Base area: ${(volume / height).toFixed(2)}`;
+                  }
+                  
+                } else if (shape === "sphere") {
+                  const radius = generateRandomInt(0, 20);
+                  const surfaceArea = 4 * Math.PI * radius ** 2
+                  const diameter = radius * 2
+                  const type = ["radius", "volume", "surface area", "volume1", "surface area1", "diameter"][generateRandomInt(0, 5)];
+                  
+                  if (type === "radius") {
+                    questionText = `Q${i + 1}: What is the radius of a sphere with surface area ${surfaceArea.toFixed(2)}?`;
+                    answerText = `Radius: ${Math.sqrt(surfaceArea / 4 / Math.PI)}`;
+                  } else if (type === "volume") {
+                    questionText = `Q${i + 1}: What is the volume of a sphere with radius ${radius}?`;
+                    answerText = `Volume: ${((4/3) * Math.PI * radius ** 3).toFixed(2)}`;
+                  } else if (type === "surface area") {
+                    questionText = `Q${i + 1}: What is the surface area of a sphere with radius ${radius}?`;
+                    answerText = `Surface area: ${(4 * Math.PI * radius ** 2).toFixed(2)}`
+                  } else if (type === "volume1") {
+                    questionText = `Q${i + 1}: What is the volume of a sphere with diameter ${diameter}?`;
+                    answerText = `Volume: ${((4/3) * Math.PI * (diameter / 2) ** 3).toFixed(2)}`;
+                  } else if (type === "surface area1") {
+                    questionText = `Q${i + 1}: What is the surface area of a sphere with diameter ${diameter}?`;
+                    answerText = `Surface area: ${(4 * Math.PI * (diameter / 2) ** 2).toFixed(2)}`;
+                  } else if (type === "diameter") {
+                    questionText = `Q${i + 1}: What is the diameter of a sphere with surface area ${surfaceArea.toFixed(2)}?`;
+                    answerText = `Diameter: ${(Math.sqrt(surfaceArea / 4 / Math.PI)) * 2}`;
+                  }
+                
+                } else if (shape === "pythagorean") {
+                  const a = generateRandomInt(1, 20);
+                  const b = generateRandomInt(1, 20);
+                  const type = ["hypotenuse", "missing leg"][generateRandomInt(0, 1)];
+
+                  if (type === "hypotenuse") {
+                      questionText = `Q${i + 1}: What is the hypotenuse of a right triangle with legs ${a} and ${b}?`;
+                      answerText = `Hypotenuse: ${Math.sqrt(a ** 2 + b ** 2).toFixed(2)}`;
+                  } else if (type === "missing leg") {
+                      const c = Math.sqrt(a ** 2 + b ** 2).toFixed(2);
+                    questionText = `Q${i + 1}: If one leg of a right triangle is ${a} and the hypotenuse is ${c}, what is the length of the other leg?`;
+                    answerText = `Missing leg: ${b}`;
+                  }
+                }
+
+                questionDiv.innerHTML = questionText + `<div class="answer hidden">${answerText}</div>`;
+                questionsSection.appendChild(questionDiv);
+            }
+
+            document.getElementById("revealSection").classList.remove("hidden");
+        }
+
+        function revealAnswers() {
+            const answers = document.querySelectorAll(".answer");
+            answers.forEach(answer => answer.classList.remove("hidden"));
+        }
+    </script>
+</body>
+</html>
