@@ -132,6 +132,7 @@
       <option value="cylinder">Cylinder</option>
       <option value="sphere">Sphere</option>
       <option value="pythagorean">Pythagorean Theorem</option>
+      <option value="effects">Dimension Changing</option>
     </select>
 
     <div id="inputSection" class="hidden">
@@ -375,6 +376,47 @@
                       const c = Math.sqrt(a ** 2 + b ** 2).toFixed(2);
                     questionText = `Q${i + 1}: If one leg of a right triangle is ${a} and the hypotenuse is ${c}, what is the length of the other leg?`;
                     answerText = `Missing leg: ${b}`;
+                  }
+                  
+                } else if (shape === "effects") {
+                  const type = ["doubleSidePerimeter", "doubleSideArea", "doubleSideVolume", "doubleRadiusPerimeter", "doubleRadiusArea", "doubleRadiusVolume", "tripleSidePerimeter", "tripleSideArea", "tripleSideVolume", "tripleRadiusPerimeter", "tripleRadiusArea", "tripleRadiusVolume"][generateRandomInt(0, 11)];
+                  
+                  if (type === "doubleSidePerimeter") {
+                    questionText = `Q${i + 1}: If you double the side length of a square, how many times greater is the square's resulting perimeter?`;
+                    answerText = `2 times`;
+                  } else if (type === "doubleSideArea") {
+                    questionText = `Q${i + 1}: If you double the side length of a square, how many times greater is the square's resulting area?`;
+                    answerText = `4 times`;
+                  } else if (type === "doubleSideVolume") {
+                    questionText = `Q${i + 1}: If you double the side length of a square, how many times greater is the cube's resulting volume?`;
+                    answerText = `8 times`;
+                  } else if (type === "doubleRadiusPerimeter") {
+                    questionText = `Q${i + 1}: If you double the radius of a circle, how many times greater is the circle's resulting circumference?`;
+                    answerText = `2 times`;
+                  } else if (type === "doubleRadiusArea") {
+                    questionText = `Q${i + 1}: If you double the radius of a circle, how many times greater is the circle's resulting area?`;
+                    answerText = `4 times`;
+                  } else if (type === "doubleRadiusVolume") {
+                    questionText = `Q${i + 1}: If you double the radius of a circle, how many times greater is the cylinder's resulting volume?`;
+                    answerText = `4 times`;
+                  } else if (type === "tripleSidePerimeter") {
+                    questionText = `Q${i + 1}: If you triple the side length of a square, how many times greater is the square's resulting perimeter?`;
+                    answerText = `3 times`;
+                  } else if (type === "tripleSideArea") {
+                    questionText = `Q${i + 1}: If you triple the side length of a square, how many times greater is the square's resulting area?`;
+                    answerText = `9 times`;
+                  } else if (type === "tripleSideVolume") {
+                    questionText = `Q${i + 1}: If you triple the side length of a square, how many times greater is the cube's resulting volume?`;
+                    answerText = `27 times`;
+                  } else if (type === "tripleRadiusPerimeter") {
+                    questionText = `Q${i + 1}: If you triple the radius of a circle, how many times greater is the circle's resulting circumference?`;
+                    answerText = `3 times`;
+                  } else if (type === "tripleRadiusArea") {
+                    questionText = `Q${i + 1}: If you triple the radius of a circle, how many times greater is the circle's resulting area?`;
+                    answerText = `9 times`;
+                  } else if (type === "tripleRadiusVolume") {
+                    questionText = `Q${i + 1}: If you triple the radius of a circle, how many times greater is the cylinder's resulting volume?`;
+                    answerText = `9 times`;
                   }
                 }
 
